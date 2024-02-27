@@ -5,7 +5,7 @@ function singleStimTests(group)
 % Input
 %   group       giving the experimental group, 'RoomTemp' or 'Cold'
 % -------------------------------------------------------------------------
-% Author: Bjarne Schultze       [last modified: 01.08.2023]
+% Author: Bjarne Schultze       [last modified: 227.02.2024]
 % -------------------------------------------------------------------------
 
 % Load the room temperature results
@@ -71,6 +71,7 @@ xlabel("number of separate stimulus"); ax1.XTickLabel = ["2","3","4"];
 ylabel(["latency diffenence to 1st", "separate stimulus [ms]"])
 title("A", 'FontWeight', 'bold', 'FontSize', 18)
 ax1.LineWidth = 2; ax1.FontSize = 14; 
+ax1.Box = 'off';
 ax1.TitleHorizontalAlignment = 'left'; ax1.TitleFontSizeMultiplier = 1.5;
 ax1.Title.Units = 'normalized'; ax1.Title.Position = [-0.24,1,0];
 
@@ -81,17 +82,18 @@ xlabel("number of separate stimulus"); ax2.XTickLabel = ["2","3","4"];
 ylabel(["latency diffenence to 1st", "separate stimulus [ms]"])
 title("B", 'FontWeight', 'bold')
 ax2.LineWidth = 2; ax2.FontSize = 14; 
+ax2.Box = 'off';
 ax2.TitleHorizontalAlignment = 'left'; ax2.TitleFontSizeMultiplier = 1.5;
 ax2.Title.Units = 'normalized'; ax2.Title.Position = [-0.24,1,0];
 
 % Modify boxplot appearence
-set(bxplt1.Children(:), 'LineWidth', 1)
+set(bxplt1.Children(:), 'LineWidth', 2)
 set(bxplt1.Children(10:21), 'Color', 'k')
 set(bxplt1.Children(1:3), 'Color', [0.5, 0.5, 0.2])
 set(bxplt1.Children(7:9), 'Color', [0.4     0.75    0.0])
 set(bxplt1.Children(4:6), 'Color', 'k')
 
-set(bxplt2.Children(:), 'LineWidth', 1)
+set(bxplt2.Children(:), 'LineWidth', 2)
 set(bxplt2.Children(10:21), 'Color', 'k')
 set(bxplt2.Children(1:3), 'Color', [0.75    0.0     0.35])
 set(bxplt2.Children(7:9), 'Color', [0.0     0.6     0.9])

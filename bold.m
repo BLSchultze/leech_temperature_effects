@@ -3,19 +3,33 @@
 % marker size, and enlarges the axes labels.
 % -----
 % Input
-%   - ax    axes handle for the axes to adapt
+%   - ax            axes handle for the axes to adapt
+%   - markerSize    (optional, positional) float, gives the marker size
 % -------------------------------------------------------------------------
-% Author: Bjarne Schultze       last modified: 24.01.2024
+% Author: Bjarne Schultze       last modified: 27.02.2024
 % -------------------------------------------------------------------------
-function bold(ax)
+function bold(ax,varargin)
+
+% Check for optional input
+if nargin > 1
+    markerSize = varargin{1};
+else
+    markerSize = 17;
+end
 
 % Get children of axis (lines)
 chld = ax.Children;
 
+% Iterate over axis children, distinguish line and text
 for child = 1:length(chld)
-    % Set line width of plot lines
-    chld(child).LineWidth = 2;
-    chld(child).MarkerSize = 17;
+    if isequal(chld(child).Type,'line')
+        % Set line width of plot lines
+        chld(child).LineWidth = 2;
+        chld(child).MarkerSize = markerSize;
+    elseif isequal(chld(child).Type,'text')
+        % Set font size of text
+        chld(child).FontSize = 14;
+    end
 end
 
 % Set line width of axes

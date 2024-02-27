@@ -1,7 +1,7 @@
 %% Script to create the figures for the written report
 % Figures are saved as eps files. 
 % -------------------------------------------------------------------------
-% Author: Bjarne Schultze       last modified: 24.01.2024
+% Author: Bjarne Schultze       last modified: 27.02.2024
 % -------------------------------------------------------------------------
 
 % Plot the stimulation protocol (complete and detail)
@@ -115,31 +115,38 @@ clb.Label.String = "Temperature [°C]";
 exportgraphics(fig4,'Report/figures/example_traces_cold.eps', ...
     'ContentType','vector','BackgroundColor','white')
 
+
 %% Figures for the separate stimuli
-close all
+close all   % close all previous figures
 
 % Extend color order
-COrder = [0	0.447	0.741;
-0.851	0.325	0.0980;
-0.929	0.694	0.125;
-0.494	0.184	0.557;
-0.467	0.675	0.188;
-0.302	0.745	0.933;
-0.635	0.0780	0.184;
-0.604	0.859	0.008;
-0.851	0	    0.525;
-0	    0.757	0.812;
-0.502	0.502	0.502;
-0.910	0.910	0;
-0.525	0	    0.812;
-0.871	0	    0];
+COrder = [  0	    0.447	0.741;
+            0.851	0.325	0.0980;
+            0.929	0.694	0.125;
+            0.494	0.184	0.557;
+            0.467	0.675	0.188;
+            0.302	0.745	0.933;
+            0.635	0.0780	0.184;
+            0.604	0.859	0.008;
+            0.851	0	    0.525;
+            0	    0.757	0.812;
+            0.502	0.502	0.502;
+            0.910	0.910	0;
+            0.525	0	    0.812;
+            0.871	0	    0];
 
 % Plot separate stim results
 [fig_lat_temp, fig_lat_trial, fig_rel_lat_temp, ...
     fig_lat_trial_idx, fig_q10] = plotResultsSingleStim('Cold');
-
 % Close unsued figures 
-close([9,11:13,16:18])
+close([3:5,7:9,11:13,16:18])
+
+
+% Modify latency temperature plot with stim amplitude highlighted
+axFigE = fig_lat_temp(6).Children;
+bold(axFigE(2))
+axFigE(2).Title.String = "";
+
 
 % Modify plot appearance
 bold(fig_lat_temp(1).Children); bold(fig_lat_temp(2).Children)
@@ -157,13 +164,18 @@ hold(fig_lat_temp(2).Children, 'off')
 
 % Single pulse latencies relative to warmest trial
 bold(fig_rel_lat_temp.Children(1))
-bold(fig_rel_lat_temp.Children(2))
+bold(fig_rel_lat_temp.Children(2), 10)
 fig_rel_lat_temp.Children(2).Title.String = "";
 fig_rel_lat_temp.Children(1).Box = "on";
 
+
 % Modify the Q10 boxplot
-fig_q10.Position = [488,440,544,322];
-fig_q10.Children.LineWidth = 2; fig_q10.Children.FontSize = 14;
+fig_q10.Position = [488,440,544,350];
+fig_q10.Children.LineWidth = 2; 
+fig_q10.Children.FontSize = 14;
+fig_q10.Children.Box = 'off';
+fig_q10.Children.YLim = [-0.1, 1.9];
+
 bxplt = fig_q10.Children.Children;
 set(bxplt.Children(1), 'MarkerEdgeColor', [0, 0.6, 0.9], 'LineWidth', 2)
 set(bxplt.Children(5), 'Color', [0, 0.6, 0.9], 'LineWidth', 2)
@@ -172,17 +184,13 @@ set(bxplt.Children(6), 'Color', [0.4, 0.75, 0], 'LineWidth', 2)
 set(bxplt.Children(3:4), 'Color', [1, 0.5, 0.2], 'LineWidth', 2)
 set(bxplt.Children(7:14), 'LineWidth', 2, 'Color', 'k')
 
+
 % Modify spike count over temperature plot
 spkcount_temp = findobj( 'Type', 'Figure', 'Name', 'SpikeCountTemp');
 tileE = spkcount_temp.Children.Children(2);
 tileT = spkcount_temp.Children.Children(1);
+bold(tileE); bold(tileT)
 % Adjust layouot
-tileE.FontSize = 14;
-tileT.FontSize = 14;
-tileE.XAxis.LineWidth = 2;
-tileE.YAxis.LineWidth = 2;
-tileT.XAxis.LineWidth = 2;
-tileT.YAxis.LineWidth = 2;
 tileE.YLim = [-0.1,2.1];
 tileT.YLim = [-0.1,2.1];
 tileE.YTick = [0,1,2];
@@ -204,11 +212,14 @@ exportgraphics(fig_q10, 'Report/figures/q10_boxplot.eps', ...
     'ContentType','vector','BackgroundColor','white')
 exportgraphics(fig_rel_lat_temp, 'Report/figures/rel_lat_rel_temp.eps', ...
     'ContentType', 'vector', 'BackgroundColor', 'white')
-
 exportgraphics(spkcount_temp, 'Report/figures/spkcout_temp.eps', ...
     'ContentType','vector','BackgroundColor','white')
+exportgraphics(fig_lat_temp(6), 'Report/figures/lat_temp_stim.eps', ...
+    'ContentType','vector','BackgroundColor','white')
+
 
 %% Temperature raster plot (combined stimuli)
+close all    % close all previous figures
 % Define colors
 elec_col = [143,21,75]/255; elec_col_light = [200,146,170]/255;
 tac_col = [67,138,63]/255; tac_col_light = [135,200,135]/255;
@@ -305,23 +316,23 @@ exportgraphics(gcf, 'Report/figures/temp_raster.eps', ...
 
 
 %% Plots for the control experiments
-close all
+close all     % close all previous figures
 
 % Extend color order
-COrder = [0	0.447	0.741;
-0.851	0.325	0.0980;
-0.929	0.694	0.125;
-0.494	0.184	0.557;
-0.467	0.675	0.188;
-0.302	0.745	0.933;
-0.635	0.0780	0.184;
-0.604	0.859	0.008;
-0.851	0	    0.525;
-0	    0.757	0.812;
-0.502	0.502	0.502;
-0.910	0.910	0;
-0.525	0	    0.812;
-0.871	0	    0];
+COrder = [  0	    0.447	0.741;
+            0.851	0.325	0.0980;
+            0.929	0.694	0.125;
+            0.494	0.184	0.557;
+            0.467	0.675	0.188;
+            0.302	0.745	0.933;
+            0.635	0.0780	0.184;
+            0.604	0.859	0.008;
+            0.851	0	    0.525;
+            0	    0.757	0.812;
+            0.502	0.502	0.502;
+            0.910	0.910	0;
+            0.525	0	    0.812;
+            0.871	0	    0];
 
 % Plot separate stim results, discard the unwanted ones
 [~,lat_trial,~,~] = plotResultsSingleStim('RoomTemp');
@@ -338,13 +349,8 @@ lat_trial(2).Children.ColorOrder = COrder;
 spkcount_trial = findobj( 'Type', 'Figure', 'Name', 'SpikeCountTrial');
 tileE = spkcount_trial.Children.Children(2);
 tileT = spkcount_trial.Children.Children(1);
-% Adjust layouot
-tileE.FontSize = 14;
-tileT.FontSize = 14;
-tileE.XAxis.LineWidth = 2;
-tileE.YAxis.LineWidth = 2;
-tileT.XAxis.LineWidth = 2;
-tileT.YAxis.LineWidth = 2;
+% Adjust layout
+bold(tileE); bold(tileT);
 tileE.YLim = [-0.1,2.1];
 tileT.YLim = [-0.1,2.1];
 tileE.YTick = [0,1,2];
@@ -362,21 +368,4 @@ exportgraphics(spkcount_trial, 'Report/figures/spkcout_trial.eps', ...
 exportgraphics(lat_trial(2), 'Report/figures/lat_trial_e.eps', ...
     'ContentType','vector','BackgroundColor','white')
 exportgraphics(lat_trial(1), 'Report/figures/lat_trial_t.eps', ...
-    'ContentType','vector','BackgroundColor','white')
-
-%% Further control
-% Close all figures 
-close all
-
-% Plot separate stim results, discard the unwanted ones
-[lat_temp_stim,~,~,~] = plotResultsSingleStim('Cold');
-close([1:5,7:18])
-% Catch axes handle
-axFigE = lat_temp_stim(6).Children;
-% Change figure appearance
-bold(axFigE(2))
-axFigE(2).Title.String = "";
-
-% Save figure 
-exportgraphics(lat_temp_stim(6), 'Report/figures/lat_temp_stim.eps', ...
     'ContentType','vector','BackgroundColor','white')
